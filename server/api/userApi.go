@@ -24,7 +24,7 @@ func Login(c *gin.Context) {
 		singedToken, _ := GenerateJwtToken(claims)
 		c.JSON(http.StatusOK, NewApiResponse(http.StatusOK, "", singedToken))
 	} else {
-		c.JSON(http.StatusNotFound, NewApiResponse(http.StatusNotFound, "用户不存在", nil))
+		c.JSON(http.StatusOK, NewApiResponse(http.StatusNotFound, "用户不存在", nil))
 	}
 }
 
@@ -41,4 +41,10 @@ func GetUserInfo(c *gin.Context) {
 	} else {
 		c.JSON(http.StatusNotFound, NewApiResponse(http.StatusNotFound, "没有查询到", nil))
 	}
+}
+
+func GetList(c *gin.Context) {
+	var users []User
+	db.Find(&users)
+	c.JSON(http.StatusOK, NewApiResponse(http.StatusOK, "", users))
 }

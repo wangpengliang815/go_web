@@ -16,9 +16,10 @@ export function getInfo(token) {
   })
 }
 
-export function logout() {
+export function getList(params) {
   return request({
-    url: '/vue-admin-template/user/logout',
-    method: 'post'
+    url: '/user/getList',
+    method: 'get',
+    params
   })
 }

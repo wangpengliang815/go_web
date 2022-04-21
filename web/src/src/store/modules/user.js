@@ -5,7 +5,8 @@ import { resetRouter } from '@/router'
 const getDefaultState = () => {
   return {
     token: getToken(),
-    name: ''
+    name: '',
+    avatar:''
   }
 }
 
@@ -20,6 +21,9 @@ const mutations = {
   },
   SET_NAME: (state, name) => {
     state.name = name
+  },
+  SET_AVATAR: (state, avatar) => {
+    state.avatar = avatar
   }
 }
 
@@ -51,6 +55,7 @@ const actions = {
         // const { name, avatar } = data
 
         commit('SET_NAME', data.UserName)
+        commit('SET_AVATAR', data.Avatar)
         resolve(data)
       }).catch(error => {
         reject(error)
@@ -61,14 +66,10 @@ const actions = {
   // user logout
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
         removeToken() // must remove  token  first
         resetRouter()
         commit('RESET_STATE')
         resolve()
-      }).catch(error => {
-        reject(error)
-      })
     })
   },
 

@@ -21,6 +21,8 @@ func main() {
 
 	r.GET("/api/user/info", GetUserInfo)
 
+	r.GET("/api/user/getList", GetList)
+
 	err := r.Run()
 	if err != nil {
 		fmt.Println(err.Error())
