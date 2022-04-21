@@ -2,15 +2,12 @@ package main
 
 import (
 	"fmt"
-	. "go_web_server/common"
-	_ "gorm.io/driver/sqlserver"
-	"net/http"
-
 	"github.com/gin-gonic/gin"
+	. "go_web_server/api"
+	"net/http"
 )
 
-var db = CreateDbConn()
-
+// Cors 跨域配置
 func Cors() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		origin := c.Request.Header.Get("origin") //请求头部
@@ -37,14 +34,15 @@ func Cors() gin.HandlerFunc {
 
 func main() {
 	r := gin.Default()
-
 	r.Use(Cors())
 
-	r.GET("/api/users", func(c *gin.Context) {
-		var users []User
-		db.Find(&users)
-		c.JSON(http.StatusOK, users)
+	// 默认启动页
+	r.GET("/", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"message": "success"})
 	})
+
+	r.POST("/api/user/getToken", GetUserToken)
+
 	err := r.Run()
 	if err != nil {
 		fmt.Println(err.Error())

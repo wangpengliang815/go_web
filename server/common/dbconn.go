@@ -2,6 +2,7 @@ package common
 
 import (
 	"fmt"
+	. "go_web_server/entity"
 	"gorm.io/driver/sqlserver"
 	"gorm.io/gorm"
 	"log"
@@ -13,7 +14,7 @@ func CreateDbConn() *gorm.DB {
 		server   = "localhost"
 		port     = 1433
 		user     = "sa"
-		database = "go_db"
+		database = "go_web"
 		password = "wpl19950815"
 	)
 	// 数据库连接字符串
@@ -27,6 +28,5 @@ func CreateDbConn() *gorm.DB {
 
 	// 启用自动迁移生成表
 	_ = db.AutoMigrate(&User{})
-	_ = db.AutoMigrate(&UserInfo{})
 	return db
 }

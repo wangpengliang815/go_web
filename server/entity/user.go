@@ -1,11 +1,11 @@
-package common
+package entity
 
 import "time"
 
 type User struct {
-	// gorm.Model        // gorm里自定义的结构包含ID/CreatedAt/UpdatedAt/DeletedAt四个字段,其中DeletedAt标记当前数据是否被删除(gorm中默认使用逻辑删除)如果使用的话对应的Sql语句会自动添加相关筛选语句
 	Id          int       `gorm:"primaryKey; column:Id"`
-	Name        string    `gorm:"default:'test'; column:Name; type:nvarchar(64);not null;comment:用户姓名"`
+	UserName    string    `gorm:"default:'test'; column:UserName; type:nvarchar(100);not null;comment:用户姓名"`
+	PassWord    string    `gorm:"column:PassWord; type:nvarchar(100);not null;comment:用户密码"`
 	Age         int       `gorm:"column:Age"`
 	PhoneNumber string    `gorm:"column:PhoneNumber"`
 	Address     string    `gorm:"column:Address"`
