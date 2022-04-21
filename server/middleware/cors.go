@@ -1,33 +1,25 @@
 package middleware
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 // Cors 跨域配置
 func Cors() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		origin := c.Request.Header.Get("origin") //请求头部
-		if len(origin) == 0 {
-			origin = c.Request.Header.Get("Origin")
+		method := c.Request.Method
+		c.Header("Access-Control-Allow-Origin", "*")                                                             // 可将将 * 替换为指定的域名
+		c.Header("Access-Control-Allow-Headers", "Content-Type,AccessToken,X-CSRF-Token, Authorization,X-Token") //你想放行的header也可以在后面自行添加
+		c.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, UPDATE")                      //我自己只使用 get post 所以只放行它
+		c.Header("Access-Control-Expose-Headers", "Content-Length, Access-Control-Allow-Origin, Access-Control-Allow-Headers, Content-Type")
+		c.Header("Access-Control-Allow-Credentials", "true")
+
+		// 放行所有OPTIONS方法
+		if method == "OPTIONS" {
+			c.AbortWithStatus(http.StatusNoContent)
 		}
-		//接收客户端发送的origin （重要！）
-		c.Writer.Header().Set("Access-Control-Allow-Origin", origin)
-		//允许客户端传递校验信息比如 cookie (重要)
-		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
-		c.Writer.Header().Set("X-Token", "true")
-		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
-		//服务器支持的所有跨域请求的方法
-		c.Writer.Header().Set("Access-Control-Allow-Methods", "OPTIONS, GET, POST, PUT, DELETE, UPDATE")
-		c.Writer.Header().Set("Content-Type", "application/json; charset=utf-8")
-		// 设置预验请求有效期为 86400 秒
-		c.Writer.Header().Set("Access-Control-Max-Age", "86400")
-		if c.Request.Method == "OPTIONS" {
-			fmt.Println("21212121221")
-			c.AbortWithStatus(204)
-			return
-		}
+		// 处理请求
 		c.Next()
 	}
 }

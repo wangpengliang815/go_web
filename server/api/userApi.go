@@ -18,8 +18,8 @@ func Login(c *gin.Context) {
 	if user.Id != 0 {
 		claims := &JWTClaims{
 			UserID:   user.Id,
-			Username: user.UserName,
-			Password: user.PassWord,
+			UserName: user.UserName,
+			PassWord: user.PassWord,
 		}
 		singedToken, _ := GenerateJwtToken(claims)
 		c.JSON(http.StatusOK, NewApiResponse(http.StatusOK, "", singedToken))
@@ -30,11 +30,15 @@ func Login(c *gin.Context) {
 
 func GetUserInfo(c *gin.Context) {
 	token := c.Query("token")
-	fmt.Printf("token=%v", token)
 	claims, err := VerifyAction(token)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	fmt.Println(claims)
-	c.JSON(http.StatusOK, gin.H{"message": "ok"})
+	var user User
+	db.Where("UserName=? And PassWord=? And Id=?", claims.UserName, claims.PassWord, claims.UserID).First(&user)
+	if user.Id != 0 {
+		c.JSON(http.StatusOK, NewApiResponse(http.StatusOK, "", user))
+	} else {
+		c.JSON(http.StatusNotFound, NewApiResponse(http.StatusNotFound, "没有查询到", nil))
+	}
 }

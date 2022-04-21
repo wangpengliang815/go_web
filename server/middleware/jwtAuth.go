@@ -2,7 +2,6 @@ package middleware
 
 import (
 	"errors"
-	"fmt"
 	jwt "github.com/dgrijalva/jwt-go"
 	"time"
 )
@@ -15,8 +14,8 @@ const (
 type JWTClaims struct {
 	jwt.StandardClaims
 	UserID   int    `json:"user_id"`
-	Password string `json:"password"`
-	Username string `json:"username"`
+	PassWord string `json:"password"`
+	UserName string `json:"username"`
 }
 
 var (
@@ -52,7 +51,5 @@ func VerifyAction(strToken string) (*JWTClaims, error) {
 	if err := token.Claims.Valid(); err != nil {
 		return nil, errors.New(ErrorReLogin)
 	}
-
-	fmt.Println("verify")
 	return claims, nil
 }
