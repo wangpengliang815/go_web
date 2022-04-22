@@ -11,6 +11,7 @@ import (
 
 var db = CreateDbConn()
 
+// Login 用户登陆
 func Login(c *gin.Context) {
 	var user User
 	_ = c.ShouldBind(&user)
@@ -28,6 +29,7 @@ func Login(c *gin.Context) {
 	}
 }
 
+// GetUserInfo 获取用户详情
 func GetUserInfo(c *gin.Context) {
 	token := c.Query("token")
 	claims, err := VerifyAction(token)
@@ -43,6 +45,7 @@ func GetUserInfo(c *gin.Context) {
 	}
 }
 
+// GetList 获取全部用户数据
 func GetList(c *gin.Context) {
 	var users []User
 	db.Find(&users)
