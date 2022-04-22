@@ -6,8 +6,7 @@
       element-loading-text="Loading"
       border
       fit
-      highlight-current-row
-    >
+      highlight-current-row>
       <el-table-column align="center" label="UserId" width="95">
         <template slot-scope="scope">
           {{  scope.row.Id }}
